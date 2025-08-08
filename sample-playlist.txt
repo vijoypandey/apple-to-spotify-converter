@@ -1,0 +1,5 @@
+Name	Artist	Composer	Album	Grouping	Genre	Size	Time	Disc Number	Disc Count	Track Number	Track Count	Year	Date Modified	Date Added	Bit Rate	Sample Rate	Volume Adjustment	Kind	Equalizer	Comments	Plays	Last Played	Skips	Last Skipped	My Rating	Location
+Shake It Off	Taylor Swift	Taylor Swift	1989 (Deluxe)		Pop	9500000	3:39	1	1	6	16	2014	1/1/2015 12:00:00 AM	1/1/2015 12:00:00 AM	256	44100		AAC audio file					0	
+Uptown Funk	Mark Ronson	Mark Ronson	Uptown Special		Funk	8700000	4:30	1	1	1	11	2014	1/1/2015 12:00:00 AM	1/1/2015 12:00:00 AM	256	44100		AAC audio file					0	
+Thinking Out Loud	Ed Sheeran	Ed Sheeran	x (Deluxe Edition)		Pop	9200000	4:41	1	1	2	16	2014	1/1/2015 12:00:00 AM	1/1/2015 12:00:00 AM	256	44100		AAC audio file					0	
+All About That Bass	Meghan Trainor	Kevin Kadish	Title		Pop	7800000	3:08	1	1	1	11	2014	1/1/2015 12:00:00 AM	1/1/2015 12:00:00 AM	256	44100		AAC audio file					0	
