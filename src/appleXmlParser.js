@@ -100,6 +100,43 @@ export class AppleXmlParser {
         const result = {};
         const keys = Array.isArray(dictData.key) ? dictData.key : [dictData.key];
         
+        // Create a mapping of expected types for each key to help with parsing
+        const keyTypes = {
+            'Track ID': 'integer',
+            'Name': 'string',
+            'Artist': 'string', 
+            'Album Artist': 'string',
+            'Composer': 'string',
+            'Album': 'string',
+            'Genre': 'string',
+            'Kind': 'string',
+            'Size': 'integer',
+            'Total Time': 'integer',
+            'Disc Number': 'integer',
+            'Disc Count': 'integer',
+            'Track Number': 'integer', 
+            'Track Count': 'integer',
+            'Year': 'integer',
+            'Date Modified': 'date',
+            'Date Added': 'date',
+            'Bit Rate': 'integer',
+            'Sample Rate': 'integer',
+            'Play Count': 'integer',
+            'Play Date': 'integer',
+            'Play Date UTC': 'date',
+            'Release Date': 'date',
+            'Favorited': 'true',
+            'Loved': 'true',
+            'Artwork Count': 'integer',
+            'Sort Album': 'string',
+            'Sort Artist': 'string', 
+            'Sort Name': 'string',
+            'Persistent ID': 'string',
+            'Track Type': 'string',
+            'Apple Music': 'true',
+            'Playlist Items': 'array'
+        };
+
         // Get all value arrays
         const strings = dictData.string ? (Array.isArray(dictData.string) ? dictData.string : [dictData.string]) : [];
         const integers = dictData.integer ? (Array.isArray(dictData.integer) ? dictData.integer : [dictData.integer]) : [];
@@ -111,34 +148,66 @@ export class AppleXmlParser {
         // Track indices for each value type
         let stringIndex = 0, integerIndex = 0, dateIndex = 0, trueCount = 0, falseCount = 0, arrayIndex = 0;
 
-        // Match keys with values in order
+        // Match keys with values based on expected types
         for (const key of keys) {
             let value = null;
+            const expectedType = keyTypes[key];
 
-            // Try each value type in order until we find one
-            if (stringIndex < strings.length) {
-                value = this.cleanString(strings[stringIndex]);
-                stringIndex++;
-            } else if (integerIndex < integers.length) {
-                value = parseInt(integers[integerIndex]);
-                integerIndex++;
-            } else if (dateIndex < dates.length) {
-                value = new Date(dates[dateIndex]);
-                dateIndex++;
-            } else if (trueCount < trues) {
-                value = true;
-                trueCount++;
-            } else if (falseCount < falses) {
-                value = false;
-                falseCount++;
-            } else if (arrayIndex < arrays.length) {
-                const arrayData = arrays[arrayIndex];
-                if (key === 'Playlist Items' && arrayData.dict) {
-                    value = this.parsePlaylistItems(arrayData);
-                } else {
-                    value = arrayData;
-                }
-                arrayIndex++;
+            switch (expectedType) {
+                case 'string':
+                    if (stringIndex < strings.length) {
+                        value = this.cleanString(strings[stringIndex]);
+                        stringIndex++;
+                    }
+                    break;
+                case 'integer':
+                    if (integerIndex < integers.length) {
+                        value = parseInt(integers[integerIndex]);
+                        integerIndex++;
+                    }
+                    break;
+                case 'date':
+                    if (dateIndex < dates.length) {
+                        value = new Date(dates[dateIndex]);
+                        dateIndex++;
+                    }
+                    break;
+                case 'true':
+                    if (trueCount < trues) {
+                        value = true;
+                        trueCount++;
+                    }
+                    break;
+                case 'false':
+                    if (falseCount < falses) {
+                        value = false;
+                        falseCount++;
+                    }
+                    break;
+                case 'array':
+                    if (arrayIndex < arrays.length) {
+                        const arrayData = arrays[arrayIndex];
+                        if (key === 'Playlist Items' && arrayData.dict) {
+                            value = this.parsePlaylistItems(arrayData);
+                        } else {
+                            value = arrayData;
+                        }
+                        arrayIndex++;
+                    }
+                    break;
+                default:
+                    // Fallback: try types in order
+                    if (stringIndex < strings.length) {
+                        value = this.cleanString(strings[stringIndex]);
+                        stringIndex++;
+                    } else if (integerIndex < integers.length) {
+                        value = parseInt(integers[integerIndex]);
+                        integerIndex++;
+                    } else if (dateIndex < dates.length) {
+                        value = new Date(dates[dateIndex]);
+                        dateIndex++;
+                    }
+                    break;
             }
 
             if (value !== null && value !== undefined) {
