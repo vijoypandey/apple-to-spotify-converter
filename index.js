@@ -11,6 +11,7 @@ import { SpotifyClient } from './src/spotifyClient.js';
 
 dotenv.config();
 
+# Converting from Apple Music to Spotify
 program
   .name('apple-to-spotify')
   .description('Convert Apple Music playlists to Spotify playlists')
